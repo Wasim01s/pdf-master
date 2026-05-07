@@ -1,0 +1,9 @@
+include_defaults: prepare
+
+linter:
+  rules:
+    - avoid_print
+    - prefer_const_constructors
+    - prefer_const_literals_to_create_immutables
+    - always_declare_return_types
+    - camel_case_types
