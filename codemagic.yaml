@@ -1,0 +1,42 @@
+workflows:
+  android-build:
+    name: PDF Engine Android Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    
+    working_directory: flutter_project
+
+    environment:
+      flutter: stable
+      java: 17
+      groups:
+        - android_credentials
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: '*'
+          include: true
+
+    scripts:
+      - name: Set up local.properties
+        script: |
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+      
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+
+      - name: Flutter build APK
+        script: |
+          flutter build apk --release --build-name=1.0.0 --build-number=$(($BUILD_NUMBER + 100))
+
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+      - build/app/outputs/bundle/**/*.aab
+
+    publishing:
+      email:
+        recipients:
+          - nomanalam123421@gmail.com
